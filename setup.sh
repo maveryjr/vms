@@ -38,7 +38,7 @@ case $OS_TYPE in
     "ubuntu"|"debian")
         apt_install
         ;;
-    "rhel"|"centos")
+    "rhel"|"centos"|"amzn")  # Added amzn for Amazon Linux
         if command -v dnf &> /dev/null; then
             dnf_install
         else
