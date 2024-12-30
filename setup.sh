@@ -61,7 +61,7 @@ esac
 
 # Install Oh My Zsh and configure shell
 echo "🛠 Installing Oh My Zsh..."
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended || true
+RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc || true
 
 # Set Zsh as default shell
 echo "🐚 Setting Zsh as default shell..."
