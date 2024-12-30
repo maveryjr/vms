@@ -90,4 +90,23 @@ else
     echo "⚠️ Oh My Zsh plugins directory not found"
 fi
 
+# Install zoxide
+echo "🚀 Installing zoxide..."
+curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+
+# Configure zoxide for zsh
+echo "⚙️ Configuring zoxide..."
+if [ -f ~/.zshrc ]; then
+    # Add zoxide initialization to .zshrc if not already present
+    if ! grep -q "zoxide init zsh" ~/.zshrc; then
+        echo 'eval "$(zoxide init zsh)"' >> ~/.zshrc
+    fi
+    
+    # Rebuild completions cache
+    rm -f ~/.zcompdump*
+    zsh -c "autoload -U compinit && compinit"
+else
+    echo "⚠️ ~/.zshrc not found"
+fi
+
 echo "✅ Setup complete! Please restart your terminal or run 'zsh' to start using your new shell."
