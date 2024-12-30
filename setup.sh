@@ -16,7 +16,7 @@ fi
 apt_install() {
     echo "📦 Using apt package manager..."
     sudo apt-get update
-    sudo apt-get install -y zsh curl git nano python3 python3-pip
+    sudo apt-get install -y zsh curl git nano python3 python3-pip util-linux-user
 }
 
 yum_install() {
@@ -25,7 +25,7 @@ yum_install() {
     # First remove curl-minimal if it exists
     sudo yum remove -y curl-minimal || true
     # Install packages with --allowerasing flag
-    sudo yum install -y --allowerasing zsh git nano python3 python3-pip curl
+    sudo yum install -y --allowerasing zsh git nano python3 python3-pip util-linux-user
 }
 
 dnf_install() {
@@ -34,7 +34,7 @@ dnf_install() {
     # First remove both curl and curl-minimal if they exist
     sudo dnf remove -y curl curl-minimal || true
     # Install packages
-    sudo dnf install -y zsh git nano python3 python3-pip
+    sudo dnf install -y zsh git nano python3 python3-pip util-linux-user
     # Install curl separately with allowerasing
     sudo dnf install -y --allowerasing curl
 }
@@ -59,18 +59,29 @@ case $OS_TYPE in
         ;;
 esac
 
-# Install Oh My Zsh
+# Install Oh My Zsh and configure shell
 echo "🛠 Installing Oh My Zsh..."
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
-sudo chsh -s $(which zsh) $USER
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended || true
+
+# Set Zsh as default shell
+echo "🐚 Setting Zsh as default shell..."
+if command -v chsh >/dev/null 2>&1; then
+    sudo chsh -s $(which zsh) $USER || echo "⚠️ Could not change shell automatically"
+else
+    echo "⚠️ chsh not found - please change your default shell manually"
+fi
 
 # Install Oh My Zsh plugins
 echo "🔌 Installing Oh My Zsh plugins..."
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions || true
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting || true
-
-# Configure .zshrc
-echo "⚙️ Configuring .zshrc..."
-sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
+if [ -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins" ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions 2>/dev/null || true
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting 2>/dev/null || true
+    
+    # Update .zshrc
+    echo "⚙️ Configuring .zshrc..."
+    sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
+else
+    echo "⚠️ Oh My Zsh plugins directory not found"
+fi
 
 echo "✅ Setup complete! Please restart your terminal or run 'zsh' to start using your new shell."
