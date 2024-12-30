@@ -16,7 +16,7 @@ fi
 apt_install() {
     echo "📦 Using apt package manager..."
     sudo apt-get update
-    sudo apt-get install -y zsh curl git nano python3 python3-pip util-linux-user
+    sudo apt-get install -y zsh curl git nano python3 python3-pip
 }
 
 yum_install() {
