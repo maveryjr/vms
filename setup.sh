@@ -31,10 +31,12 @@ yum_install() {
 dnf_install() {
     echo "📦 Using dnf package manager..."
     sudo dnf update -y
-    # First remove curl-minimal if it exists
-    sudo dnf remove -y curl-minimal || true
-    # Install packages with --allowerasing flag to handle conflicts
-    sudo dnf install -y --allowerasing zsh git nano python3 python3-pip curl
+    # First remove both curl and curl-minimal if they exist
+    sudo dnf remove -y curl curl-minimal || true
+    # Install packages
+    sudo dnf install -y zsh git nano python3 python3-pip
+    # Install curl separately with allowerasing
+    sudo dnf install -y --allowerasing curl
 }
 
 echo "🚀 Starting system setup..."
