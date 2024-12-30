@@ -65,10 +65,16 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 
 # Set Zsh as default shell
 echo "🐚 Setting Zsh as default shell..."
-if command -v chsh >/dev/null 2>&1; then
-    sudo chsh -s $(which zsh) $USER || echo "⚠️ Could not change shell automatically"
+if [ "$OS_TYPE" = "amzn" ]; then
+    # Amazon Linux uses usermod
+    sudo usermod -s $(which zsh) $USER || echo "⚠️ Could not change shell automatically"
 else
-    echo "⚠️ chsh not found - please change your default shell manually"
+    # Other distributions use chsh
+    if command -v chsh >/dev/null 2>&1; then
+        sudo chsh -s $(which zsh) $USER || echo "⚠️ Could not change shell automatically"
+    else
+        echo "⚠️ chsh not found - please change your default shell manually"
+    fi
 fi
 
 # Install Oh My Zsh plugins
