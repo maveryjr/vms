@@ -22,13 +22,19 @@ apt_install() {
 yum_install() {
     echo "📦 Using yum package manager..."
     sudo yum update -y
-    sudo yum install -y zsh curl git nano python3 python3-pip
+    # First remove curl-minimal if it exists
+    sudo yum remove -y curl-minimal || true
+    # Install packages with --allowerasing flag
+    sudo yum install -y --allowerasing zsh git nano python3 python3-pip curl
 }
 
 dnf_install() {
     echo "📦 Using dnf package manager..."
     sudo dnf update -y
-    sudo dnf install -y zsh curl git nano python3 python3-pip
+    # First remove curl-minimal if it exists
+    sudo dnf remove -y curl-minimal || true
+    # Install packages with --allowerasing flag to handle conflicts
+    sudo dnf install -y --allowerasing zsh git nano python3 python3-pip curl
 }
 
 echo "🚀 Starting system setup..."
