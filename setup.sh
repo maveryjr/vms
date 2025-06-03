@@ -43,7 +43,7 @@ echo "🚀 Starting system setup..."
 
 # Install packages based on OS
 case $OS_TYPE in
-    "ubuntu"|"debian")
+    "ubuntu"|"debian"|"kali")
         apt_install
         ;;
     "rhel"|"centos"|"amzn")  # Added amzn for Amazon Linux
