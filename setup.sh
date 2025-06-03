@@ -59,7 +59,7 @@ case $OS_TYPE in
         ;;
 esac
 
-# Install Oh My Zsh and configure shell
+# Install Oh My Zsh
 echo "🛠 Installing Oh My Zsh..."
 RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc || true
 
