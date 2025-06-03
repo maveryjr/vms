@@ -25,9 +25,8 @@ yum_install() {
     # First remove curl-minimal if it exists
     sudo yum remove -y curl-minimal || true
     # Install packages with --allowerasing flag
-    sudo yum install -y --allowerasing zsh git nano python3 python3-pip util-linux-user
+    sudo yum install -y --allowerasing zsh git nano python3 python3-pip util-linux-user curl
 }
-
 dnf_install() {
     echo "📦 Using dnf package manager..."
     sudo dnf update -y
